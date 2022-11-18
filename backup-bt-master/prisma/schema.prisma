@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native","rhel-openssl-1.0.x"]
+}
+
+//datasource db {
+//  provider = "postgresql"
+//  url      = env("DATABASE_URL")
+//}
+//ローカルテスト用
+//datasource db {
+//  provider = "postgresql"
+//  url      = "postgresql://postgres:postgres@192.168.70.91:5432/postgres"
+//}
+
+model TransactionId {
+  transaction_id     String   @unique
+  business_id        BigInt
+  create_at          DateTime
+}
+
+model OtpFailure {
+  failure_id     BigInt   @unique
+  authentication_id        String
+  create_at          DateTime
+}
+
+model user_id_phone_number_disagreement {
+  disagreement_id     BigInt   @unique
+  user_id            BigInt
+  create_at          DateTime
+}
+
+model send_confirm {
+  send_confirm_id     BigInt   @unique
+  user_id             BigInt
+  one_time_code       String
+  valid_period        DateTime
+  create_at           DateTime
+}
+
+model send_confirm_failure {
+  send_confirm_failure_id     BigInt   @unique
+  user_id                     BigInt
+  create_at                   DateTime
+}
+
+model backup_token {
+  backup_token_id             BigInt   @unique
+  backup_token                String
+  user_id                     BigInt
+  issue_date                  DateTime
+  valid_period                DateTime
+  force_logout_flg            Boolean
+  version                     BigInt
+  is_deleted                  Boolean
+  create_at                   DateTime
+  update_at                   DateTime
+}
+
+model login_device {
+  backup_token_id             BigInt   @unique
+  device                      String
+  login_date                  DateTime
+   version                    BigInt 
+  is_deleted                  Boolean
+  create_at                   DateTime
+  update_at                   DateTime
+}
+
+model social_id_not_exist {
+  not_exist_id                   BigInt   @unique
+  subject_claim                  String
+  create_at                      DateTime
+}
+
+model transaction_social_link {
+  transaction_id             String   
+  social_id                  BigInt  @unique
+  create_at                  DateTime
+}
+
+model subject_claim {
+  social_id                   BigInt   @unique
+  id_type                     BigInt
+  subject_claim               String
+  create_at                   DateTime
+}
+
+model social_token {
+  social_id                   BigInt   @unique
+  social_token                String
+  valid_period                DateTime
+  version                     BigInt
+  is_deleted                  Boolean
+  create_at                   DateTime
+  update_at                   DateTime
+}
+
+model authorization_code {
+  social_id                   BigInt   @unique
+  authorization_code          String
+  nonce                       String
+  code_challenge              String
+  create_at                   DateTime
+}
+
+model idp_attribute {
+  social_id                   BigInt   @unique
+  email_address               String
+  family_name                 String
+  given_name                  String
+  family_name_kana            String
+  given_name_kana             String
+  phone_number                String
+  postal_code                 String
+  birth_date                  String
+  create_at                   DateTime
+}
+
+model transaction_sms_link {
+  transaction_id              String   
+  sms_id                      BigInt      @unique
+  create_at                   DateTime
+}
+
+model otp_code {
+  sms_id                      BigInt      @unique
+  phone_number                String
+  otp_code                    String
+  valid_period                DateTime
+  create_at                   DateTime
+}
+
+model sms_token {
+  sms_id                      BigInt      @unique
+  sms_token                   String
+  phone_number                String
+  valid_period                DateTime
+  version                     BigInt
+  is_deleted                  Boolean
+  create_at                   DateTime
+  update_at                   DateTime
+}
